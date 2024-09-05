@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, marshal
 from models.Comentario import Comentario, comentarioFields
+from models.Usuario import Usuario
 from helpers.database import db
 
 
@@ -31,8 +32,12 @@ class ComentarioResources(Resource):
 
    
     def get(self, id):
-        comentario = Comentario.query.filter_by(post_id=id).all()
-        return {'comentario': marshal(comentario, comentarioFields)}
+        comentarios = Comentario.query.filter_by(post_id=id).all()
+        for comentario in comentarios:
+            usuario = Usuario.query.get(comentario.autor_id)
+            comentario.nome_usuario = usuario.nome_usuario
+
+        return {'comentario': marshal(comentarios, comentarioFields)}
     
     def delete(self, id):
         try:

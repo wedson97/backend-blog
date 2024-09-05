@@ -6,6 +6,7 @@ comentarioFields = {
     'id': fields.Integer,
     'post_id': fields.Integer,
     'autor_id': fields.Integer,
+    'nome_usuario': fields.String,
     'conteudo': fields.String,
     'criado_em': fields.String,
     'deletado_em': fields.String

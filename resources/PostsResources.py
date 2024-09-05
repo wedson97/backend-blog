@@ -56,8 +56,8 @@ class PostResources(Resource):
         self.parser.add_argument('autor_id', type=str, help='Problema na autor_id', required=False)
         self.parser.add_argument('imagem', type=str, help='Problema na imagem', required=False)
 
-    def get(self, id):
-        post = Post.query.get(id)
+    def get(self, post_id):
+        post = Post.query.get(post_id)
         if post != None:
             return {'posts': marshal(post, postFields)}
         return {'Mensagem':'Post não encontrado'},404

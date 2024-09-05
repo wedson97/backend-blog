@@ -32,4 +32,4 @@ class Usuario(db.Model):
       return check_password_hash(self.senha, senha)
 
     def __repr__(self):
-        return f"<Usuario {self.nome}>"
+        return f"<Usuario {self.nome_usuario}>"

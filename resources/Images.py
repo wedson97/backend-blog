@@ -5,7 +5,6 @@ import os
 class ImageResource(Resource):
     def get(self, filename):
         filename = filename.lstrip('./')
-        
         directory = os.path.join('./uploads')
 
         file_path = os.path.join(directory, os.path.basename(filename))
