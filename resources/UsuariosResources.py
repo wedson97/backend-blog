@@ -54,9 +54,9 @@ class UsuarioResources(Resource):
     parser = reqparse.RequestParser()
 
     def __init__(self):
-        self.parser.add_argument('nome_usuario', type=str, help='Problema no nome do usuário', required=True)
-        self.parser.add_argument('email', type=str, help='Problema no email', required=True)
-        self.parser.add_argument('senha', type=str, help='Problema na senha', required=True)
+        self.parser.add_argument('nome_usuario', type=str, help='Problema no nome do usuário', required=False)
+        self.parser.add_argument('email', type=str, help='Problema no email', required=False)
+        self.parser.add_argument('senha', type=str, help='Problema na senha', required=False)
 
     def get(self, id):
         usuarios = Usuario.query.get(id)
@@ -66,16 +66,30 @@ class UsuarioResources(Resource):
         args = self.parser.parse_args()
         try:
             usuario = Usuario.query.get(id)
+
+            # Verifica se o usuário foi encontrado
+            if usuario is None:
+                return {'message': 'Usuário não encontrado'}, 404
+
+            # Atualiza os campos
             usuario.nome_usuario = args["nome_usuario"]
-            usuario.email = args["email"]
-            usuario.senha = args["senha"]
 
-            db.session.add(usuario)
+            # Verifica se o email foi fornecido
+            if args["email"] is not None:
+                usuario.email = args["email"]
+
+            # Verifica se a senha foi fornecida (opcional, dependendo da lógica do seu sistema)
+            if args["senha"] is not None:
+                usuario.senha = args["senha"]
+
             db.session.commit()
-
+            print(usuario)
             return marshal(usuario, usuarioFields)
         except Exception as e:
+            db.session.rollback()  # Desfaz a sessão em caso de erro
             print(e)
+            return {'message': 'Erro ao atualizar usuário'}, 500
+
 
     def delete(self):
         pass

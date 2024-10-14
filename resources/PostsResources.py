@@ -69,31 +69,41 @@ class PostResources(Resource):
             return {'message': 'Post não encontrado'}, 404
 
         try:
-            autor_id = int(args['autor_id'])  # Convertendo para int
+            autor_id = int(args['autor_id'])
         except ValueError:
             return {'message': 'ID do autor inválido'}, 400
 
         titulo = args['titulo']
         conteudo = args['conteudo']
-        if args["imagem"]!=None:
+
+        if args["imagem"] is not None:
             imagem_base64 = args['imagem']
 
-            # Decodificar a imagem base64
+            if post.imagem_url:
+                try:
+                    if os.path.exists(post.imagem_url):
+                        os.remove(post.imagem_url)
+                except Exception as e:
+                    return {'message': f'Erro ao remover a imagem antiga: {str(e)}'}, 500
+
             imagem_data = base64.b64decode(imagem_base64.split(',')[1])
 
-            # Criar um nome de arquivo seguro e um caminho para salvar a imagem
             filename = secure_filename(f"{titulo}_{str(autor_id)}.png")
             image_path = os.path.join('./uploads/', filename)
 
-            # Salvar a imagem no diretório do backend
             with open(image_path, 'wb') as img_file:
                 img_file.write(imagem_data)
-            post.imagem_url=image_path
+            
+            post.imagem_url = image_path
+
         post.titulo = titulo
         post.conteudo = conteudo
+
         db.session.add(post)
         db.session.commit()
+
         return {'message': 'Post atualizado com sucesso'}, 200
+
     
     def delete(self, post_id):
         try:
