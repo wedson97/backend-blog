@@ -9,6 +9,8 @@ from resources.LikesResources import LikesResources, LikeResources
 from resources.DeslikesResources import DeslikesResources, DeslikeResources
 # Comentarios
 from resources.ComentariosResources import ComentariosResources, ComentarioResources
+# Notificacoes
+from resources.Notificacoes import NotificacoesResource, NotificacaoResource
 # Imagens
 from resources.Images import ImageResource
 api = Api()
@@ -34,6 +36,10 @@ api.add_resource(DeslikeResources,'/deslikes/<int:post_id>')
 # Comentarios
 api.add_resource(ComentariosResources,'/comentarios')
 api.add_resource(ComentarioResources,'/comentarios/<int:id>')
+
+# Notificacoes
+api.add_resource(NotificacoesResource,'/notificacoes/<int:id>')
+api.add_resource(NotificacaoResource,'/notificacao')
 
 # Imagens
 api.add_resource(ImageResource,'/images/<path:filename>')

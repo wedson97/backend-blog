@@ -5,6 +5,8 @@ from .Like import Like
 from .Deslike import Deslike
 from .Categoria import Categoria
 from .PostCategoria import PostCategoria
+from .Notificacoes import Notificacoes
+from .Config_Blog import Config_Blog
 
 __all__ = [
     'Usuario',
@@ -13,5 +15,7 @@ __all__ = [
     'Like',
     'Deslike',
     'Categoria',
-    'PostCategoria'
+    'PostCategoria',
+    'Notificacoes',
+    'Config_Blog'
 ]
